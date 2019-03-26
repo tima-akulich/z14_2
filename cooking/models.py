@@ -12,8 +12,73 @@ class Topic(models.Model):
     )
     level = models.PositiveSmallIntegerField(blank=True, null=True)
 
+    likes = models.PositiveSmallIntegerField(blank=True, null=True)
+    dislikes = models.PositiveSmallIntegerField(blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.author} - {self.title}'
+
+
+class Repost(models.Model):
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    topic = models.ForeignKey(
+        'Topic',
+        null=True,
+        on_delete=models.SET_NULL
+    )
+    author = models.ForeignKey(
+        'auth.User',
+        null=False,
+        on_delete=models.CASCADE
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.author} - {self.title} - {self.text} - {self.topic}'
+
+
+class Comment(models.Model):
+    text = models.TextField()
+    topic = models.ForeignKey(
+        'Topic',
+        null=False,
+        on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        'auth.User',
+        null=False,
+        on_delete=models.SET_NULL
+    )
+
+    likes = models.PositiveSmallIntegerField(blank=True, null=True)
+    dislikes = models.PositiveSmallIntegerField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.author} - {self.text} - {self.topic}'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        'auth.User',
+        null=False,
+        on_delete=models.CASCADE
+    )
+    author = models.ForeignKey(
+        'auth.User',
+        null=False,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return f'{self.user} - {self.author}'
+
+    class Meta:
+        unique_together = ('user', 'author')
