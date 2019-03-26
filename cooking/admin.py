@@ -1,5 +1,7 @@
 from django.contrib import admin
-from cooking.models import Topic
+from django.contrib.auth.admin import UserAdmin
+
+from cooking.models import User
 # Register your models here.
 
-admin.site.register(Topic)
+admin.site.register(User, UserAdmin)
