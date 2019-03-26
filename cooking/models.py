@@ -51,7 +51,7 @@ class Comment(models.Model):
     )
     author = models.ForeignKey(
         'auth.User',
-        null=False,
+        null=True,
         on_delete=models.SET_NULL
     )
 
@@ -66,19 +66,20 @@ class Comment(models.Model):
 
 
 class Subscription(models.Model):
+    subuser = models.ForeignKey(
+        'auth.User',
+        null=False,
+        on_delete=models.CASCADE
+    )
     user = models.ForeignKey(
         'auth.User',
         null=False,
-        on_delete=models.CASCADE
-    )
-    author = models.ForeignKey(
-        'auth.User',
-        null=False,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='user'
     )
 
     def __str__(self):
-        return f'{self.user} - {self.author}'
+        return f'{self.subuser} - {self.user}'
 
     class Meta:
-        unique_together = ('user', 'author')
+        unique_together = ('subuser', 'user')
