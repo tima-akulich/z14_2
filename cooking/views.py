@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
 from cooking.models import Recipe
@@ -12,16 +12,22 @@ def hello_world(request, *args, **kwargs):
 
 
 def index_view(request, *args, **kwargs):
-    name = request.GET.get('username') \
-           or request.POST.get('username') \
-           or 'world'
 
     recipes = Recipe.objects.all().order_by('-created_at')
     return render(
         request,
         template_name='index.html',
         context={
-            'context_name': name,
             'recipes': recipes
         }
     )
+
+
+def create(request, *args, **kwargs):
+    if 'button1' in request.POST:
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        level = request.POST.get('levels')
+        b = Recipe(title=title, text=text, level=level)
+        b.save()
+    return HttpResponseRedirect("/")
