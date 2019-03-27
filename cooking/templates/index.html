@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            background: #ffccd1;
+        }
+    </style>
+</head>
+<body>
+<h1 style="text-align: center">Hello, {{ context_name }}!</h1>
+<h2>{{ param1 }}</h2>
+<h2>{{ param2 }}</h2>
+
+<form action="{% url 'index' %}" method="get">
+    <input type="text" name="username">
+    <button type="submit">SEND</button>
+</form>
+
+POST:
+<form action="{% url 'index' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="username">
+    <button type="submit">SEND</button>
+</form>
+<hr/>
+<h1>Recipe</h1>
+{% for recipe in recipes %}
+    <h2>{{ recipe.title }}</h2>
+    <h3>{{ recipe.text }}</h3>
+    <br/>
+{% endfor %}
+
+</body>
+</html>
