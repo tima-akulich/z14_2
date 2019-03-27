@@ -32,6 +32,19 @@ POST:
     <h3>{{ recipe.text }}</h3>
     <br/>
 {% endfor %}
-
+<h1>Recipe</h1>
+<form action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+    Title:
+    <input type="text" name="title">
+    <br>
+    Text:
+    <textarea autofocus name="text"></textarea>
+    <br>
+    Level:
+    <input type="number" min="0" step="1" name="levels">
+    <br>
+    <button type="submit" name="button1">SEND</button>
+</form>
 </body>
 </html>
