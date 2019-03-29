@@ -1,35 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        body {
-            background: #ffccd1;
-        }
-    </style>
+		<style>
+    @-webkit-keyframes argh-my-eyes {
+    0%   { background-color: #fff; }
+    49% { background-color: #fff; }
+    50% { background-color: #abb; }
+    99% { background-color: #abb; }
+    100% { background-color: #ff0000; }
+  }
+  @-moz-keyframes argh-my-eyes {
+    0%   { background-color: #ff0000; }
+    49% { background-color: #ff0000; }
+    50% { background-color: #abb; }
+    99% { background-color: #abb; }
+    100% { background-color: #ff0000; }
+  }
+  @keyframes argh-my-eyes {
+    0%   { background-color: #ff0000; }
+    49% { background-color: #ff0000; }
+    50% { background-color: #abb; }
+    99% { background-color: #abb; }
+    100% { background-color: #ff0000; }
+  }
+  body {
+  -webkit-animation: argh-my-eyes 0.5s infinite;
+  -moz-animation:    argh-my-eyes 0.5s infinite;
+  animation:         argh-my-eyes 0.5s infinite;
+}
+  </style>
 </head>
 <body>
-<h1 style="text-align: center">Hello, {{ context_name }}!</h1>
+<h1>Create recipe</h1>
+<form action="{% url 'create' %}" method="post">
+    {% csrf_token %}
+    Title:
+    <input type="text" name="title">
+    <br>
+    Text:
+     <input type="text" name="text">
+    <br>
+    Level:
+    <input type="number" min="0" max="10" step="1" name="levels">
+    <br>
+    <button type="submit" name="button1">SEND</button>
+</form>
+<h1 style="text-align: center">Hello, {{ context_name }}</h1>
 <h2>{{ param1 }}</h2>
 <h2>{{ param2 }}</h2>
-
-<form action="{% url 'index' %}" method="get">
-    <input type="text" name="username">
-    <button type="submit">SEND</button>
-</form>
-
-POST:
-<form action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-    <input type="text" name="username">
-    <button type="submit">SEND</button>
-</form>
-<hr/>
 <h1>Recipe</h1>
 {% for recipe in recipes %}
+    <img src={{ recipe.image }}></img>
     <h2>{{ recipe.title }}</h2>
-    <h3>{{ recipe.text }}</h3>
+    <h2>{{ recipe.text }}</h2>
     <br/>
 {% endfor %}
 
