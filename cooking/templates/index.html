@@ -1,15 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        body {
-            background: #ffccd1;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'cooking/css/styles.css' %}" >
 </head>
 <body>
+<p style="text-align: right">
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'logout' %}">Logout</a>
+</p>
+<h1>User: {{ request.user }}</h1>
 <h1 style="text-align: center">Hello, {{ context_name }}!</h1>
 <h2>{{ param1 }}</h2>
 <h2>{{ param2 }}</h2>
@@ -25,11 +27,21 @@ POST:
     <input type="text" name="username">
     <button type="submit">SEND</button>
 </form>
+{{ recipe_form }}
+<hr/>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
 <hr/>
 <h1>Recipe</h1>
 {% for recipe in recipes %}
     <h2>{{ recipe.title }}</h2>
     <h3>{{ recipe.text }}</h3>
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" style="height: 100px"/>
+    {% endif %}
     <br/>
 {% endfor %}
 

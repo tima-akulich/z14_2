@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Default{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'cooking/css/styles.css' %}" >
+</head>
+<body>
+    {% if request.user.username == 'admin' %}
+        <h1>ITS ADMIN</h1>
+    {% else %}
+        <h1>NOT ADMIN</h1>
+    {% endif %}
+
+    {% with username=request.user.username other_param=2 %}
+        <h2>{{ username|upper|title }} / {{ other_param }}</h2>
+    {% endwith %}
+    {% with page=2 %}
+        Page: {{ page }}
+        Next Page: {{ page|add:"1" }}
+        Next Page: {{ page|add:"-1" }}
+    {% endwith %}
+
+    {% include 'block1.html' with param1=1 param2=2 %}
+
+    <a href="{% url 'example1' %}">Example 1</a>
+    <a href="{% url 'example2' %}">Example 2</a>
+    {% block content %}
+        <h1>Default text</h1>
+    {% endblock content %}
+</body>
+</html>
