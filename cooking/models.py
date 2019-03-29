@@ -2,12 +2,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
-
-
-# class UserInfo(models.Model):
-#     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
-#     avatar = models.ImageField(blank=True, null=True)
 
 class User(AbstractUser):
     avatar = models.ImageField(blank=True, null=True)
@@ -33,12 +27,6 @@ class Recipe(models.Model):
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
         ordering = ('-created_at',)
-        # unique_together = (
-        #     ('title', 'author'),
-        # )
-        # index_together = (
-        #     ('title', 'author'),
-        # )
 
 
 class Comment(models.Model):

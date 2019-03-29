@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe input</title>
+    <style>
+        body {
+            background: #D3D3D3;
+        }
+    </style>
+</head>
+    <h1 style="text-align: center">Recipes Input Page</h1>
+    <form action="{% url 'recipe_input' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="title" name="title">
+        <input type="text" placeholder="text" name="text">
+        <input type="number" placeholder="level" name="level">
+        <button type="submit">POST</button>
+    </form>
+    <h1>Recipes:</h1>
+    <hr>
+    {% for recipe in recipes %}
+        <h2>{{ recipe.title}}</h2>
+        <h2>{{ recipe.text }}</h2>
+        <hr>
+    {% endfor%}
+</html>
