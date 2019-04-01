@@ -10,12 +10,34 @@ from django.views.decorators.http import require_GET, require_POST
 from cooking.forms import MyFirstForm, RecipeForm
 from cooking.models import Recipe
 
+from django.core.paginator import Paginator
+
 # Create your views here.
 
 
 def hello_world(request, *args, **kwargs):
     name = request.GET.get('name', 'world')
     return HttpResponse(f'Hello, {name}')
+
+
+@login_required
+def recipe(request, *args, **kwargs):
+    recipe_form = RecipeForm()
+    if request.POST:
+        title = request.POST.get('title')
+        text = request.POST.get('text')
+        level = request.POST.get('levels')
+        b = Recipe(title=title, text=text, level=level)
+        b.save()
+        return HttpResponseRedirect("/")
+    return render(
+        request,
+        template_name='create_recipe.html',
+        context={
+            'recipe_form': recipe_form
+        }
+    )
+
 
 
 def index_view(request, *args, **kwargs):
@@ -30,6 +52,13 @@ def index_view(request, *args, **kwargs):
         form.is_valid()
 
     recipes = Recipe.objects.all().order_by('-created_at')
+
+    contact_list = Recipe.objects.all()
+    paginator = Paginator(contact_list, 5)
+
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
+
     return render(
         request,
         template_name='index.html',
@@ -37,7 +66,8 @@ def index_view(request, *args, **kwargs):
             'context_name': name,
             'recipes': recipes,
             'form': form,
-            'recipe_form': recipe_form
+            'recipe_form': recipe_form,
+            'contacts': contacts
         }
     )
 
@@ -63,6 +93,27 @@ def example_json_response(request, *args, **kwargs):
     }), content_type='application/json')
 
 
-def view_with_params(request, user_id, **kwargs):
-    # redirect()
-    return HttpResponse(reverse('with-params', kwargs={'user_id': 1}))
+def view_recipe(request, user_id, **kwargs):
+    recipes = Recipe.objects.get(pk=user_id)
+    return render(
+        request,
+        template_name='recipe.html',
+        context={"recipe_i": recipes}
+    )
+
+
+@login_required
+def my_recipe(request, *args, **kwargs):
+    contact_list = Recipe.objects.filter(author_id=request.user.id)
+    paginator = Paginator(contact_list, 5)
+
+    page = request.GET.get('page')
+    contacts = paginator.get_page(page)
+    return render(
+        request,
+        template_name='index.html',
+        context={"contacts": contacts}
+    )
+
+
+

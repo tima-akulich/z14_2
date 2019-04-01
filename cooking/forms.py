@@ -19,7 +19,7 @@ class MyFirstForm(forms.Form):
         return cleaned_data
 
 
-class RecipeForm(forms.ModelForm):
-    class Meta:
-        model = Recipe
-        fields = ('title', 'text', 'level')
+class RecipeForm(forms.Form):
+    title = forms.CharField()
+    text =  forms.CharField(widget=forms.Textarea(attrs={'width':"35px", 'cols' : "30px", 'rows': "10px", }))
+    level = forms.IntegerField(min_value=1, max_value=100)

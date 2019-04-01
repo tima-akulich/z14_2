@@ -1,49 +1,106 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel='stylesheet' href="{% static 'cooking/bootstrap/css/bootstrap.min.css'%}" type='text/css' media='all'>
     <link rel="stylesheet" href="{% static 'cooking/css/styles.css' %}" >
+
 </head>
 <body>
-<p style="text-align: right">
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'logout' %}">Logout</a>
-</p>
-<h1>User: {{ request.user }}</h1>
-<h1 style="text-align: center">Hello, {{ context_name }}!</h1>
-<h2>{{ param1 }}</h2>
-<h2>{{ param2 }}</h2>
 
-<form action="{% url 'index' %}" method="get">
-    <input type="text" name="username">
-    <button type="submit">SEND</button>
-</form>
+<header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar">
 
-POST:
-<form action="{% url 'index' %}" method="post">
-    {% csrf_token %}
-    <input type="text" name="username">
-    <button type="submit">SEND</button>
-</form>
-{{ recipe_form }}
-<hr/>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-<hr/>
-<h1>Recipe</h1>
-{% for recipe in recipes %}
-    <h2>{{ recipe.title }}</h2>
-    <h3>{{ recipe.text }}</h3>
-    {% if recipe.image %}
-        <img src="{{ recipe.image.url }}" style="height: 100px"/>
-    {% endif %}
-    <br/>
+    <div class="navbar-nav-scroll">
+        <ul class="navbar-nav bd-navbar-nav flex-row">
+
+            <li class="nav-item">
+                <a class="nav-link " href="/" >Feed</a>
+            </li>
+            {% if request.user.is_authenticated  %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/my_recipe" >My Recipes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/recipe" >Create new recipe</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+    <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+        {% if request.user.is_authenticated  %}
+            <a  class="btn btn btn-outline-warning" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a  class="btn btn btn-outline-warning" href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </ul>
+
+</header>
+
+<div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+
+    <br>
+</div>
+
+
+{% for contact in contacts %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="wp-block property list">
+                    <div class="wp-block-body">
+                        <div class="wp-block-img">
+                            <a >
+                                <a href="/post/{{ contact.id }}" class="stretched-link"></a>
+                                <img src="/media/{{ contact.image }}" alt="">
+                            </a>
+                        </div>
+                        <div class="wp-block-content">
+                            <small>
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ contact.created_at }}</small>
+                            <h4 class="content-title">{{ contact.title}}</h4>
+                            <p class="description"></p>
+                            <span class="pull-left">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </span>
+                            <span class="pull-right">
+              <span class="capacity">
+                <i class="fa fa-user"></i> {{ contact.author }}
+              </span>
+            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endfor %}
+
+<ul class="pagination">
+    {% if contacts.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ contacts.previous_page_number }}">Previous</a>
+        </li>
+    {% endif %}
+    {% if contacts.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ contacts.number|add:"-1"}}">{{ contacts.number|add:"-1"}}</a></li>
+    {% endif %}
+    <li class="page-item active"><a class="page-link" href="?page={{ contacts.number}}">{{ contacts.number}}</a></li>
+    {% if contacts.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ contacts.number|add:"1"}}">{{ contacts.number|add:"1"}}</a></li>
+    {% endif %}
+    <li class="page-item">
+        {% if contacts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ contacts.next_page_number }}">Next</a>
+            </li>
+        {% endif %}
+</ul>
+
 
 </body>
 </html>
