@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel='stylesheet' href="{% static 'cooking/bootstrap/css/bootstrap.min.css'%}" type='text/css' media='all'>
+    <link rel="stylesheet" href="{% static 'cooking/css/styles.css' %}" >
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="wp-block property list">
+                <div class="wp-block-body">
+                    <div class="wp-block-img">
+                        <a>
+                            <img src="/media/{{ recipe_i.image }}" alt="">
+                        </a>
+                    </div>
+                    <div class="wp-block-content">
+                        <small>
+                            <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ recipe_i.created_at }}</small>
+                        <h4 class="content-title">{{ recipe_i.title }}</h4>
+                        <p class="description">{{ recipe_i.text }}</p>
+                        <span class="pull-left">
+              <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+            </span>
+                        <span class="pull-right">
+              <span class="capacity">
+                <i class="fa fa-user"></i> Level:{{ recipe_i.level }} | {{ recipe_i.author }}
+              </span>
+            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel='stylesheet' href="{% static 'cooking/bootstrap/css/bootstrap.min.css'%}" type='text/css' media='all'>
+    <link rel="stylesheet" href="{% static 'cooking/css/styles.css' %}" >
+</head>
+<body>
+<div class="auth-form-body-m mt-3">
+
+    <div class="auth-form px-3" id="login">
+        <div class="auth-form-header p-4">
+            <h2>Create Recipe</h2>
+        </div>
+        <div id="js-flash-container">
+
+        </div>
+
+        <div class="auth-form-body mt-3">
+            <form method="post">
+                {% csrf_token %}
+                <div class="create_recipe_text">
+                    <h4>Title:</h4>
+                    {{ recipe_form.title }}
+                </div>
+                <div class="create_recipe_text">
+                    <h4>Text:</h4>
+                    {{ recipe_form.text }}
+                </div>
+                <div class="create_recipe_text">
+                    <h4>Level:</h4>
+                    {{ recipe_form.level }}
+                </div>
+
+                <button type="submit" class="btn btn-primary create_recipe">Add</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+</body>
+</html>
