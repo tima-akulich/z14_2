@@ -1,68 +1,69 @@
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-import json
-
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.decorators.http import require_GET, require_POST
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView, FormView
 
-from cooking.forms import MyFirstForm, RecipeForm
-from cooking.models import Recipe
+from cooking.forms import RecipeForm, RegistrationForm
+from cooking.models import Recipe, User
 
-# Create your views here.
-
-
-def hello_world(request, *args, **kwargs):
-    name = request.GET.get('name', 'world')
-    return HttpResponse(f'Hello, {name}')
+from django.conf import settings
 
 
-def index_view(request, *args, **kwargs):
-    name = request.GET.get('username') \
-           or request.POST.get('username') \
-           or 'world'
+class FeedView(ListView):
+    paginate_by = settings.PAGE_SIZE
+    template_name = 'recipe_list.html'
+    queryset = Recipe.objects.all().order_by('-created_at')
+    url_name = 'feed'
+    # context_object_name = ''
 
-    form = MyFirstForm()
-    recipe_form = RecipeForm()
-    if request.POST:
-        form = MyFirstForm(request.POST)
-        form.is_valid()
-
-    recipes = Recipe.objects.all().order_by('-created_at')
-    return render(
-        request,
-        template_name='index.html',
-        context={
-            'context_name': name,
-            'recipes': recipes,
-            'form': form,
-            'recipe_form': recipe_form
-        }
-    )
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(
+            object_list=object_list, **kwargs
+        )
+        context['feed_url'] = reverse(self.url_name)
+        return context
 
 
-def example_template(request, *args, **kwargs):
-    return render(request, template_name='example_page.html')
+class UserFeedView(FeedView, LoginRequiredMixin):
+    url_name = 'user.feed'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(author=self.request.user)
 
 
-@login_required
-@require_GET
-def other_example_template(request, *args, **kwargs):
-    return render(request, template_name='other_example_page.html')
+class RecipeView(DetailView):
+    template_name = 'recipe.html'
+    queryset = Recipe.objects.all()
 
 
-def example_json_response(request, *args, **kwargs):
-    return HttpResponse(json.dumps({
-        "key": 123,
-        "value": True,
-        "list": [1,2,3],
-        "dict": {
-            "1": 2
-        }
-    }), content_type='application/json')
+class CreateRecipeView(CreateView, LoginRequiredMixin):
+    template_name = 'create_recipe.html'
+    form_class = RecipeForm
+    model = Recipe
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+        return redirect(self.get_success_url())
 
 
-def view_with_params(request, user_id, **kwargs):
-    # redirect()
-    return HttpResponse(reverse('with-params', kwargs={'user_id': 1}))
+class RegisterView(FormView):
+    template_name = 'registration/signup.html'
+    form_class = RegistrationForm
+    model = User
+    success_url = reverse_lazy('feed')
+
+    def form_valid(self, form):
+        form.save()
+        user = authenticate(
+            request=self.request,
+            username=form.cleaned_data['username'],
+            password=form.cleaned_data['password1']
+        )
+        login(self.request, user)
+        return super().form_valid(form)
+
