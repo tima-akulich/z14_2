@@ -5,10 +5,6 @@ from django.db import models
 # Create your models here.
 
 
-# class UserInfo(models.Model):
-#     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
-#     avatar = models.ImageField(blank=True, null=True)
-
 class User(AbstractUser):
     avatar = models.ImageField(blank=True, null=True)
     subscribers = models.ManyToManyField('self')

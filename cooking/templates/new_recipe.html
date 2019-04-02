@@ -1,0 +1,47 @@
+{% extends "header.html" %}
+{% block title %}
+<title>New Recipe</title> 
+{% endblock title %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+               <h1>New Recipe</h1>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <label for="InputTitle">Title</label>
+                        <input type="text" class="form-control" id="InputTitle" aria-describedby="titleHelp" placeholder="Enter Title" value="{{ form.title.value }}" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputText">Recipe contest</label>
+                        <textarea type="text" class="form-control" id="InputText" placeholder="text" name="text" value="{{ form.text.value }}"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputLevel">Level/label>
+                        <input type="number" rows="6" class="form-control" id="InputText" placeholder="Level" name="level" value="{{ form.level.value }}"}>
+                    </div>
+                    <div class="form-group">
+                            <label for="InputLevel">Level/label>
+                            <input type="number" rows="6" class="form-control" id="InputText" placeholder="Level" name="level" value="{{ form.level.value }}"}>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

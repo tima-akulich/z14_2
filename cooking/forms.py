@@ -1,25 +1,46 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.core.exceptions import ValidationError
 
-from cooking.models import Recipe
+from cooking.models import Recipe, User
 
 
-class MyFirstForm(forms.Form):
-    username = forms.CharField()
-    age = forms.IntegerField(min_value=1, max_value=100)
-    # date = forms.DateField()
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if username == 'bad_word':
-            raise forms.ValidationError('Your username has bad word')
-        return username
 
-    def clean(self):
-        cleaned_data = super().clean()
-        return cleaned_data
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'password1',
+            'password2'
+        )
+
+    def save(self, commit=True):
+        user = super(RegistrationForm, self).save(commit=False)
+        user.username = self.cleaned_data['username']
+        if commit:
+            user.save()
+        return user
 
 
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ('title', 'text', 'level')
+        fields = ('title', 'text', 'level', 'author')
+
+    def clean_title(self):
+        val = self.cleaned_data['title']
+        if not val:
+            raise ValidationError('Title is empty!')
+        return val
+
+    def clean_text(self):
+        val = self.cleaned_data['text']
+        if not val:
+            raise ValidationError('Text is empty!')
+        return val

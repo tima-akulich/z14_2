@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'cooking/css/bootstrap.css' %}">
+    {% block title %}
+    {% endblock title %}
+</head>
+    <body>
+        {% block header %}
+        {% endblock header %}
+
+        {% block body %}
+        {% endblock body %}
+
+    </body>
+</html>
