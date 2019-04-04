@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, FormView
+from django.views.generic import ListView, CreateView, DetailView, FormView, UpdateView
 
-from cooking.forms import RecipeForm, RegistrationForm
-from cooking.models import Recipe, User
+from cooking.forms import RecipeForm, RegistrationForm, CommentForm, RecipeReactionForm
+from cooking.models import Recipe, User, Comment, RecipeReaction
 
 from django.conf import settings
 
@@ -38,6 +38,21 @@ class RecipeView(DetailView):
     template_name = 'recipe.html'
     queryset = Recipe.objects.all()
 
+# ?_?
+
+# class CommentView(FormView):
+#     template_name = 'recipe.html'
+#     form_class = CommentForm
+#     model = Comment
+#     queryset = Comment.objects.all()
+#
+#     def form_valid(self, form):
+#         self.object = form.save(commit=False)
+#         self.object.author = self.request.user
+#         self.object.recipe_id = self.kwargs['pk']
+#         self.object.save()
+#         return redirect('/')             # ?_?
+
 
 class CreateRecipeView(CreateView, LoginRequiredMixin):
     template_name = 'create_recipe.html'
@@ -66,4 +81,16 @@ class RegisterView(FormView):
         )
         login(self.request, user)
         return super().form_valid(form)
+
+
+class EditRecipe(UpdateView):
+    template_name = 'create_recipe.html'
+    form_class = RecipeForm
+    model = Recipe
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(author=self.request.user)
+
+
 
