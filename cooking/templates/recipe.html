@@ -1,4 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ object }}
+
+
+    {% if object.author == request.user %}
+        <a href="{% url 'edit' pk=object.pk %}" class="btn btn-primary">Edit</a>
+    {% endif %}
+
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-primary">Comment</button>
+    </form>
+
+
+
 {% endblock %}

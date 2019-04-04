@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-{% csrf_token %}
-    {{ form.as_p }}
-<button type="submit">Create</button>
-</form>
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-group flex-nowrap">
+            <label for="id_title">Title:</label>
+            <input class="form-control" type="text" name="title" maxlength="100" required="" id="id_title" value="{{ object.title }}">
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="id_text">Text:</label>
+            <textarea class="form-control" name="text" cols="40" rows="10" required="" id="id_text" >{{ object.text }}</textarea>
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="id_level">Level:</label>
+            <input class="form-control" type="number" name="level" min="0" id="id_level" value="{{ object.level }}">
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="id_image">Image:</label>
+            <input type="file" name="image" accept="image/*" id="id_image" value="{{ object.image }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
 {% endblock %}
