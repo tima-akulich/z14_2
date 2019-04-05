@@ -1,13 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-# Create your models here.
-
-
-# class UserInfo(models.Model):
-#     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
-#     avatar = models.ImageField(blank=True, null=True)
 from django.urls import reverse
 
 
@@ -20,9 +13,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     image = models.ImageField(null=True, blank=True)
-    author = models.ForeignKey(
-        get_user_model(), null=True, on_delete=models.SET_NULL
-    )
+    author = models.ForeignKey(get_user_model(), null=True, on_delete=models.SET_NULL)
     level = models.PositiveSmallIntegerField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -37,22 +28,18 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ('-created_at',)
+        # ordering = ('-created_at')
         # unique_together = (
         #     ('title', 'author'),
         # )
         # index_together = (
-        #     ('title', 'author'),
+        #     ('title', 'author')
         # )
 
 
 class Comment(models.Model):
     text = models.CharField(max_length=255)
-    author = models.ForeignKey(
-        get_user_model(),
-        on_delete=models.SET_NULL,
-        null=True
-    )
+    author = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     recipe = models.ForeignKey('cooking.Recipe', on_delete=models.CASCADE)
@@ -62,8 +49,8 @@ class BaseReaction(models.Model):
     STATUSES = (
         ('like', 'Like'),
         ('dislike', 'Dislike')
-    )
 
+    )
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
