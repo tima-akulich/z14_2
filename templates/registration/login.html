@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Login</h1>
+    <h1>Login {{ my_variable }} - {{ auth }}</h1>
+    {% for user in users %}
+        {{ user }}
+    {% endfor %}
     <form method="post">
       {% csrf_token %}
       <div class="form-group">

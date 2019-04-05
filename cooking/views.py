@@ -22,6 +22,8 @@ class FeedView(ListView):
         context = super().get_context_data(
             object_list=object_list, **kwargs
         )
+        # if self.request.GET.get('exception'):
+        #     raise Exception("Smth bad")
         context['feed_url'] = reverse(self.url_name)
         return context
 

@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -12,18 +13,32 @@ from django.urls import reverse
 
 
 class User(AbstractUser):
+    # ADMIN = 'admin'
+    # MODERATOR = 'moderator'
+    # SIMPLE_USER = 'user'
+
+    # CHOICES = (
+    #     (ADMIN, ADMIN),
+    #     (MODERATOR, MODERATOR),
+    #     (SIMPLE_USER, SIMPLE_USER)
+    # )
+
     avatar = models.ImageField(blank=True, null=True)
     subscribers = models.ManyToManyField('self')
+    # category = models.CharField(max_length=20, choices=CHOICES, default=SIMPLE_USER)
 
 
 class Recipe(models.Model):
-    title = models.CharField(max_length=100)
-    text = models.TextField()
-    image = models.ImageField(null=True, blank=True)
+    title = models.CharField(_('Название'), max_length=100)
+    text = models.TextField(_('Текст'))
+    image = models.ImageField(_('Картинка'), null=True, blank=True)
     author = models.ForeignKey(
-        get_user_model(), null=True, on_delete=models.SET_NULL
+        get_user_model(),
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_('Автор'),
     )
-    level = models.PositiveSmallIntegerField(blank=True, null=True)
+    level = models.PositiveSmallIntegerField(_('Уровень'), blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -34,9 +49,13 @@ class Recipe(models.Model):
     def get_absolute_url(self):
         return reverse('recipe', args=(self.pk, ))
 
+    @property
+    def likes(self):
+        return self.reactions.filter(status='like').count()
+
     class Meta:
-        verbose_name = 'Рецепт'
-        verbose_name_plural = 'Рецепты'
+        verbose_name = _('Рецепт')
+        verbose_name_plural = _('Рецепты')
         ordering = ('-created_at',)
         # unique_together = (
         #     ('title', 'author'),
@@ -74,7 +93,7 @@ class BaseReaction(models.Model):
 
 
 class RecipeReaction(BaseReaction):
-    recipe = models.ForeignKey('cooking.Recipe', on_delete=models.CASCADE)
+    recipe = models.ForeignKey('cooking.Recipe', on_delete=models.CASCADE, related_name='reactions')
 
 
 class CommentReaction(BaseReaction):

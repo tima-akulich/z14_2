@@ -7,7 +7,7 @@
           <img src="{{ item.image.url }}" class="card-img-top">
         {% endif %}
           <div class="card-body">
-            <h5 class="card-title">{{ item.title }}</h5>
+            <h5 class="card-title">{{ item.title }}</h5> {{ item.likes }}
             <a href="{% url 'recipe' pk=item.pk %}" class="btn btn-primary">Open</a>
           </div>
         </div>

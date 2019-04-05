@@ -41,3 +41,37 @@
 1. Сделать красивой страницу создания + страницу с регистрацией.
 2. Добавить страницу с редактированием поста (редактировать может тот, кто создавал этот пост)
 3. Добавить к посту возможность ставить лайки и оставлять комменты.
+
+# Lesson 18 05/04/2019
+1. https://docs.djangoproject.com/en/2.2/topics/http/middleware/ - мидлвари
+2. https://docs.djangoproject.com/en/2.1/ref/templates/api/#writing-your-own-context-processors - контекст процессоры
+3. https://docs.djangoproject.com/en/2.1/topics/i18n/translation/ - переводы
+4. https://docs.djangoproject.com/en/2.2/ref/contrib/admin/ - админка
+5. https://docs.djangoproject.com/en/2.2/topics/db/aggregation/#aggregating-annotations - агрегации запросов
+
+Пример агрегации через анотацию
+```cython
+from django.db.models import Case, IntegerField
+from django.db.models import Count
+from django.db.models import When
+from cooking.models import Recipe
+
+queryset = Recipe.objects.all().annotate(
+    likes_count=Count(
+        Case(
+            When(
+                reactions__status='like',
+                then=1
+            ),
+            output_field=IntegerField()
+        )
+    ),
+)
+print(queryset[0].likes_count)
+```
+
+### Homework
+0. Домашка из Lesson 17
+1. Создать middleware, которая будет писать в базу 500 ошибки приложения(Если такие будут). 
+(Придумать модель куда будете писать)
+2. Добавить модель в админку. Добавить поиск, фильтрацию по полям которые придумаете.
