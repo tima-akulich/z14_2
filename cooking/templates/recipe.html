@@ -1,4 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
     {{ object }}
+    <br></br>
+        {% if object.author == request.user %}
+        <a href="{% url 'edit' pk=object.pk %}">Edit</a>
+    {% endif %}
 {% endblock %}

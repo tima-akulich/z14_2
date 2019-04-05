@@ -1,14 +1,14 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, FormView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, FormView, UpdateView
 
-from cooking.forms import RecipeForm, RegistrationForm
+from cooking.forms import RecipesForm, RegistrationForm
 from cooking.models import Recipe, User
-
 from django.conf import settings
+# Create your views here.
 
 
 class FeedView(ListView):
@@ -16,12 +16,9 @@ class FeedView(ListView):
     template_name = 'recipe_list.html'
     queryset = Recipe.objects.all().order_by('-created_at')
     url_name = 'feed'
-    # context_object_name = ''
 
     def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(
-            object_list=object_list, **kwargs
-        )
+        context = super().get_context_data(object_list=object_list, **kwargs)
         context['feed_url'] = reverse(self.url_name)
         return context
 
@@ -39,9 +36,9 @@ class RecipeView(DetailView):
     queryset = Recipe.objects.all()
 
 
-class CreateRecipeView(CreateView, LoginRequiredMixin):
+class CreateRecipeView(CreateView):
     template_name = 'create_recipe.html'
-    form_class = RecipeForm
+    form_class = RecipesForm
     model = Recipe
 
     def form_valid(self, form):
@@ -59,11 +56,16 @@ class RegisterView(FormView):
 
     def form_valid(self, form):
         form.save()
-        user = authenticate(
-            request=self.request,
-            username=form.cleaned_data['username'],
-            password=form.cleaned_data['password1']
-        )
+        user = authenticate(self.request, username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
         login(self.request, user)
         return super().form_valid(form)
 
+
+class EditRecipe(UpdateView):
+    template_name = 'create_recipe.html'
+    form_class = RecipesForm
+    model = Recipe
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(author=self.request.user)
