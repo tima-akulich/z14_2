@@ -1,22 +1,34 @@
+from pydoc import resolve
+
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse, Resolver404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, FormView
 
-from cooking.forms import RecipeForm, RegistrationForm
-from cooking.models import Recipe, User
+from cooking.forms import RecipeForm, RegistrationForm, RecipeReactionForm
+from cooking.models import Recipe, User, RecipeReaction
 
 from django.conf import settings
 
 
-class FeedView(ListView):
+class FeedView(ListView, FormView):
     paginate_by = settings.PAGE_SIZE
     template_name = 'recipe_list.html'
+    form_class = RecipeReactionForm
+    model = RecipeReaction
     queryset = Recipe.objects.all().order_by('-created_at')
     url_name = 'feed'
     # context_object_name = ''
+
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        # self.object.recipe_id =
+        self.object.save()
+        return redirect('/')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(
