@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -52,6 +53,10 @@ class Recipe(models.Model):
     @property
     def likes(self):
         return self.reactions.filter(status='like').count()
+
+    @property
+    def recipes(self):
+        return self.reactions.filter(user=self.author)
 
     class Meta:
         verbose_name = _('Рецепт')
@@ -106,3 +111,13 @@ class Repost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     text = models.TextField(blank=True, null=True)
+
+
+class ErrorLog(models.Model):
+    exception_text = models.CharField(max_length=200)
+    url = models.URLField(max_length=200)
+    class_name = models.CharField(max_length=200)
+    method = models.CharField(max_length=100, null=True)
+    traceback = models.TextField()
+    status_code = models.IntegerField(blank=True,null=True, validators=[MinValueValidator(500),
+                                       MaxValueValidator(599)])
