@@ -30,6 +30,7 @@ class MySecondMiddleware:
         print('process view', view_func, view_args, view_kwargs)
 
     def process_exception(self, request, exception):
+        setattr(request, 'exception', exception)
         print('process exception', exception, traceback.format_exc())
 
     def process_template_response(self, request, response):

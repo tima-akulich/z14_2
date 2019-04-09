@@ -78,9 +78,14 @@ class Comment(models.Model):
 
 
 class BaseReaction(models.Model):
+    LIKE = 'like'
+    DISLIKE = 'dislike'
+
+    ALL = (LIKE, DISLIKE)
+
     STATUSES = (
-        ('like', 'Like'),
-        ('dislike', 'Dislike')
+        (LIKE, 'Like'),
+        (DISLIKE, 'Dislike')
     )
 
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
