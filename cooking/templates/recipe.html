@@ -1,4 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-    {{ object }}
-{% endblock %}
+   <div class="col-md-4 offset-md-4">
+  <div class="card">
+      <div class="card-header">
+        Recipe
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe.title }}</h5>
+        <p class="card-text">{{ recipe.text }}</p>
+
+      </div>
+      <ul class="list-group list-group-flush">
+          <li class="list-group-item"><img src="{{ recipe.image.url }}" class="card-img-top" style="height: 150px"></li>
+          <li class="list-group-item"> Author: {{ recipe.author }}</li>
+          <li class="list-group-item"> Level: {{ recipe.level}}</li>
+          <li class="list-group-item">Created: {{ recipe.created_at}}</li>
+          <li class="list-group-item">Last update: {{ recipe.updated_at}}</li>
+          <a href="/" class="btn btn-secondary">Go back</a>
+      </ul>
+  </div>
+</div>
+{% endblock content %}

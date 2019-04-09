@@ -1,14 +1,38 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseServerError, HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, FormView
 
 from cooking.forms import RecipeForm, RegistrationForm
-from cooking.models import Recipe, User
+from cooking.models import Recipe, User, RecipeReaction
 
 from django.conf import settings
+
+
+def error500(request, *args, **kwargs):
+    raise Exception('Server error!!')
+
+
+def error400(request, *args, **kwargs):
+    return HttpResponse(status=400)
+
+
+def like(request, *args, **kwargs):
+    item_id = kwargs['item_id']
+    reactions = RecipeReaction.objects.filter(user=request.user).filter(
+        recipe_id=item_id
+    ).all()
+    if not reactions:
+        reaction = RecipeReaction(
+            recipe=Recipe.objects.filter(id=item_id).first(),
+            user=request.user,
+            status='like'
+        )
+        reaction.save()
+    return redirect('feed')
 
 
 class FeedView(ListView):
@@ -16,14 +40,11 @@ class FeedView(ListView):
     template_name = 'recipe_list.html'
     queryset = Recipe.objects.all().order_by('-created_at')
     url_name = 'feed'
-    # context_object_name = ''
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(
             object_list=object_list, **kwargs
         )
-        # if self.request.GET.get('exception'):
-        #     raise Exception("Smth bad")
         context['feed_url'] = reverse(self.url_name)
         return context
 

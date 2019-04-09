@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
+
     <br>
     {% for item in object_list %}
         <div class="card">
         {% if item.image %}
-          <img src="{{ item.image.url }}" class="card-img-top">
+          <img src="{{ item.image.url }}" class="card-img-top" style="height: 150px">
         {% endif %}
           <div class="card-body">
-            <h5 class="card-title">{{ item.title }}</h5> {{ item.likes }}
+            <h5 class="card-title">{{ item.title }}</h5>
             <a href="{% url 'recipe' pk=item.pk %}" class="btn btn-primary">Open</a>
+            <a href="{% url 'like' item_id=item.id %}" class="btn btn-primary">{{ item.likes }} Likes</a>
           </div>
         </div>
         <br>

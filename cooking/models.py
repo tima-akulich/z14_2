@@ -6,26 +6,13 @@ from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
-# class UserInfo(models.Model):
-#     user = models.OneToOneField('auth.User', on_delete=models.CASCADE)
-#     avatar = models.ImageField(blank=True, null=True)
 from django.urls import reverse
 
 
 class User(AbstractUser):
-    # ADMIN = 'admin'
-    # MODERATOR = 'moderator'
-    # SIMPLE_USER = 'user'
-
-    # CHOICES = (
-    #     (ADMIN, ADMIN),
-    #     (MODERATOR, MODERATOR),
-    #     (SIMPLE_USER, SIMPLE_USER)
-    # )
 
     avatar = models.ImageField(blank=True, null=True)
     subscribers = models.ManyToManyField('self')
-    # category = models.CharField(max_length=20, choices=CHOICES, default=SIMPLE_USER)
 
 
 class Recipe(models.Model):
@@ -57,12 +44,6 @@ class Recipe(models.Model):
         verbose_name = _('Рецепт')
         verbose_name_plural = _('Рецепты')
         ordering = ('-created_at',)
-        # unique_together = (
-        #     ('title', 'author'),
-        # )
-        # index_together = (
-        #     ('title', 'author'),
-        # )
 
 
 class Comment(models.Model):
@@ -93,7 +74,11 @@ class BaseReaction(models.Model):
 
 
 class RecipeReaction(BaseReaction):
-    recipe = models.ForeignKey('cooking.Recipe', on_delete=models.CASCADE, related_name='reactions')
+    recipe = models.ForeignKey(
+        'cooking.Recipe',
+        on_delete=models.CASCADE,
+        related_name='reactions'
+    )
 
 
 class CommentReaction(BaseReaction):

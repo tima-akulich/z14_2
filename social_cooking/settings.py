@@ -51,9 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'cooking.middleware.my_first_middleware',
-    'cooking.middleware.MySecondMiddleware',
+    # 'django.middleware.locale.LocaleMiddleware',
+    'cooking.middleware.Error500Middleware',
 ]
 
 ROOT_URLCONF = 'social_cooking.urls'
@@ -113,25 +112,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en'
+# LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-LANGUAGES = (
-    ('en', 'English'),
-    ('ru', 'Русский'),
-    ('be', 'Белорусский')
-)
-
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
+# USE_I18N = True
+#
+# USE_L10N = True
+#
+# USE_TZ = True
+# #
+# # LANGUAGES = (
+#     ('en', 'English'),
+#     ('ru', 'Русский'),
+#     ('be', 'Белорусский')
+# )
+#
+# LOCALE_PATHS = (
+#     os.path.join(BASE_DIR, 'locale'),
+# )
 
 
 # Static files (CSS, JavaScript, Images)
