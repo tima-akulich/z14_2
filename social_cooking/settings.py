@@ -155,6 +155,7 @@ LOGIN_URL = reverse_lazy('login')
 
 PAGE_SIZE = 5
 
+<<<<<<< HEAD
 import django_heroku
 django_heroku.settings(locals())
 
@@ -162,3 +163,8 @@ CELERY_BROKER_URL = 'redis://localhost:6379/1'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+=======
+
+import django_heroku
+django_heroku.settings(locals())
+>>>>>>> some commit
