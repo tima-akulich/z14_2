@@ -75,3 +75,12 @@ print(queryset[0].likes_count)
 1. Создать middleware, которая будет писать в базу 500 ошибки приложения(Если такие будут). 
 (Придумать модель куда будете писать)
 2. Добавить модель в админку. Добавить поиск, фильтрацию по полям которые придумаете.
+
+# Lesson 19 09/04/2019
+1. https://devcenter.heroku.com/categories/working-with-django - heroku & django
+2. https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04 - digitalocean & django
+3. **https://m.do.co/c/4d7cd58b4514 - регистрация на DigitalOcean +$100**
+
+### Homework
+1. Домашка из Lesson 18
+2. Залить на heroku (дать ссылку на сайт в описании к пулл реквесту)
