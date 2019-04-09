@@ -12,18 +12,19 @@ def my_first_middleware(get_response):
         return response
     return _inner
 
-#
-# class Error500Middleware:
-#     def __init__(self, get_response):
-#         self.get_response = get_response
-#         self.log = False
-#
-#     def __call__(self, request):
-#         response = self.get_response(request)
-#         if response.status_code == 500:
-#             self.log = True
-#         return response
-#
-#     def process_exception(self, request, exception):
-#         if self.log:
-#             print('####process exception', exception, traceback.format_exc())
+
+class Error500Middleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+        self.log = False
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        if response.status_code == 500:
+            self.log = True
+        return response
+
+    def process_exception(self, request, exception):
+            
+            print(request.status_code)
+            print('####process exception', exception, traceback.format_exc())
