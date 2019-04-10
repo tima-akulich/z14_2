@@ -84,3 +84,5 @@ print(queryset[0].likes_count)
 ### Homework
 1. Домашка из Lesson 18
 2. Залить на heroku (дать ссылку на сайт в описании к пулл реквесту)
+
+Сайт: https://cooking-cook.herokuapp.com/en/
