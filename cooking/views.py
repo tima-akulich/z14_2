@@ -30,8 +30,18 @@ class FeedView(ListView):
                     ),
                     output_field=IntegerField()
                 )
+            ),
+            'dislikes_count': Count(
+                Case(
+                    When(
+                        reactions__status='dislike',
+                        then=1,
+                    ),
+                    output_field=IntegerField()
+                )
             )
         }
+
         if self.request.user.is_authenticated:
             annotate_kwargs['liked'] = Count(
                 Case(
@@ -43,9 +53,18 @@ class FeedView(ListView):
                     output_field=IntegerField()
                 )
             )
+            annotate_kwargs['disliked'] = Count(
+                Case(
+                    When(
+                        reactions__status='dislike',
+                        reactions__user=self.request.user,
+                        then=1,
+                    ),
+                    output_field=IntegerField()
+                )
+            )
 
         queryset = super().get_queryset().annotate(**annotate_kwargs)
-        print(queryset.query)
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
