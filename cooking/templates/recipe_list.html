@@ -14,8 +14,13 @@
                     {% csrf_token %}
                     <input type="hidden" name="recipe_id" value="{{ item.id }}">
                     <input type="hidden" name="reaction" value="like">
-                    <button type="submit" class="btn {% if item.liked %}btn-success{% else %}btn-info{% endif %}">{{ item.likes_count }} Like
-                    </button>
+                    <button type="submit" class="btn {% if item.liked %}btn-success{% else %}btn-info{% endif %}">{{ item.likes_count }} Like </button>
+                </form>
+                <form method="post" action="{% url 'reaction' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="recipe_id" value="{{ item.id }}">
+                    <input type="hidden" name="reaction" value="dislike">
+                    <button type="submit" class="btn {% if item.disliked %}btn-success{% else %}btn-info{% endif %}">{{ item.dislikes_count }} Deslike </button>
                 </form>
             </div>
         </div>
