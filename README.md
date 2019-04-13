@@ -84,3 +84,19 @@ print(queryset[0].likes_count)
 ### Homework
 1. Домашка из Lesson 18
 2. Залить на heroku (дать ссылку на сайт в описании к пулл реквесту)
+
+# Lesson 20 13/04/2019
+1. https://docs.celeryproject.org/en/latest/django/first-steps-with-django.html - django & celery
+2. https://docs.djangoproject.com/en/2.2/topics/testing/overview/ - тестироване в джанго
+
+### Homework
+1. Написать периодическую задачу:
+- которая запускается каждый день в 00:00
+- парсит сайт http://vkusno.press/category/text/all/
+- рецепты которых нету в базе приложения - сохраняет в базу
+
+PS: 
+- для получение информации со страницы  - модуль `requests`
+- для парсинга страницы - регулярные выражения
+
+2. Покрыть тестами

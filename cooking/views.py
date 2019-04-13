@@ -45,7 +45,6 @@ class FeedView(ListView):
             )
 
         queryset = super().get_queryset().annotate(**annotate_kwargs)
-        print(queryset.query)
         return queryset
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -58,7 +57,7 @@ class FeedView(ListView):
         return context
 
 
-class UserFeedView(FeedView, LoginRequiredMixin):
+class UserFeedView(LoginRequiredMixin, FeedView):
     url_name = 'user.feed'
 
     def get_queryset(self):

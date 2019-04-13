@@ -157,3 +157,8 @@ PAGE_SIZE = 5
 
 import django_heroku
 django_heroku.settings(locals())
+
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

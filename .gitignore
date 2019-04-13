@@ -4,3 +4,6 @@ media/*
 staticfiles/
 .DS_Store
 *.mo
+.coverage
+celerybeat*
+htmlcov/*

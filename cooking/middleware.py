@@ -6,7 +6,7 @@ from django.core.exceptions import MiddlewareNotUsed
 
 def my_first_middleware(get_response):
     def _inner(request):
-        print(request.META['HTTP_USER_AGENT'])
+        print(request.META.get('HTTP_USER_AGENT'))
         response = get_response(request)
         print('Post request')
         return response
@@ -21,7 +21,7 @@ class MySecondMiddleware:
 
     def __call__(self, request):
         print('Class middleware')
-        print(request.META['HTTP_USER_AGENT'])
+        print(request.META.get('HTTP_USER_AGENT'))
         response = self.get_response(request)
         print('Post response', response.status_code)
         return response
