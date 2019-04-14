@@ -29,7 +29,7 @@ class User(AbstractUser):
 
 
 class Recipe(models.Model):
-    title = models.CharField(_('Название'), max_length=100)
+    title = models.CharField(_('Название'), max_length=300)
     text = models.TextField(_('Текст'))
     image = models.ImageField(_('Картинка'), null=True, blank=True)
     image_base64 = models.TextField(null=True, blank=True)

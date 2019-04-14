@@ -1,16 +1,20 @@
+
 import time
 from celery import shared_task
 from datetime import timedelta
 
 from celery.schedules import crontab
+from celery.task import periodic_task
 from django.core.mail import send_mail
 
 from cooking.models import User
+from cooking.utils import parsing_site
 
 
 @shared_task
 def test_task():
-    time.sleep(10)
+    time.sleep(3)
+    print('qwee')
     return 1
 
 
@@ -36,3 +40,7 @@ SCHEDULE = {
     }
 }
 
+
+@periodic_task(run_every=crontab(hour=0, minute=0))
+def parsing_site_task():
+    parsing_site()
