@@ -1,3 +1,4 @@
+
 import random
 from django.test import TestCase
 
@@ -6,8 +7,7 @@ from django.conf import settings
 
 
 class TestModels(TestCase):
-    def test_ok(self):
-        pass
+
 
     def test_recipe_methods(self):
         recipe = Recipe.objects.create(
