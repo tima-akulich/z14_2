@@ -24,7 +24,7 @@ class Error500Middleware:
             self.log = True
         return response
 
-    def process_exception(self, request, exception):
-            
-            print(request.status_code)
-            print('####process exception', exception, traceback.format_exc())
+    # def process_exception(self, request, exception):
+    #
+    #         print(request.status_code)
+    #         print('####process exception', exception, traceback.format_exc())
