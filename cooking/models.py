@@ -29,9 +29,11 @@ class User(AbstractUser):
 
 
 class Recipe(models.Model):
-    title = models.CharField(_('Название'), max_length=100)
+    external_id = models.CharField(max_length=32, null=True, blank=True)
+    title = models.CharField(_('Название'), max_length=300)
     text = models.TextField(_('Текст'))
     image = models.ImageField(_('Картинка'), null=True, blank=True)
+    external_image_url = models.URLField(null=True, blank=True)
     image_base64 = models.TextField(null=True, blank=True)
     author = models.ForeignKey(
         get_user_model(),
@@ -56,6 +58,8 @@ class Recipe(models.Model):
 
     @property
     def get_image(self):
+        if self.external_image_url:
+            return self.external_image_url
         return self.image_base64 or (self.image.url if self.image else '')
 
     class Meta:

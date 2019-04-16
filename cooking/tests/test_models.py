@@ -1,4 +1,5 @@
 import random
+
 from django.test import TestCase
 
 from cooking.models import Recipe, RecipeReaction, User

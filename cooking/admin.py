@@ -15,16 +15,16 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ('level', 'created_at', 'author')
     fields = (
         ('title', 'text'),
-        ('image', 'get_image'),
+        ('image', 'get_image', 'external_image_url'),
         'author', 'level'
     )
     save_on_top = True
     readonly_fields = ('get_image', 'author')
 
     def get_image(self, obj):
-        if obj.image:
+        if obj.get_image:
             return mark_safe(
-                f'<img style="height: 200px" src="{obj.image.url}"/>'
+                f'<img style="height: 200px" src="{obj.get_image}"/>'
             )
         return 'no image'
     get_image.short_description = 'Image'

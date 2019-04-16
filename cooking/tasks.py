@@ -6,6 +6,7 @@ from celery.schedules import crontab
 from django.core.mail import send_mail
 
 from cooking.models import User
+from cooking.parsers import VkusnoParser
 
 
 @shared_task
@@ -26,6 +27,11 @@ def send_mails():
     send_mail('Test mail', 'Some message', 'admin@cooking.io', emails)
     print('Here')
 
+@shared_task
+def parse_site():
+    parser = VkusnoParser()
+    parser.parse()
+
 
 SCHEDULE = {
     'send_test_mail': {
@@ -33,6 +39,13 @@ SCHEDULE = {
         'args': (),
         'options': {},
         'schedule': crontab()
+    },
+
+    'parse_site': {
+        'task': 'cooking.tasks.parse_site',
+        'args': (),
+        'options': {},
+        'schedule': crontab(minute=0, hour=0)
     }
 }
 

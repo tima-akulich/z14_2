@@ -100,3 +100,18 @@ PS:
 - для парсинга страницы - регулярные выражения
 
 2. Покрыть тестами
+
+
+# Lesson 21 16/04/2019
+1. https://docs.python.org/3/library/threading.html - про потоки
+2. https://docs.python.org/3.7/library/multiprocessing.html - про многопроцессность
+3. https://docs.python.org/3.6/library/asyncio-eventloop.html#event-loop-examples - про асинхронщину
+4. https://aiohttp.readthedocs.io/en/stable/ - асинхронная библиотека для веба
+5. https://github.com/aio-libs - набор асинхронный библиотек для python
+6. PS. [Пояснение на пальцах про многопоточность многопроцессность и асинхронность](https://ru.stackoverflow.com/questions/445768/%D0%9C%D0%BD%D0%BE%D0%B3%D0%BE%D0%BF%D0%BE%D1%82%D0%BE%D1%87%D0%BD%D0%BE%D0%B5-vs-%D0%B0%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B5-%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B0%D0%BC%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5)
+
+### Homework
+#### Переписать класс `cooking.parsers:VkusnoParser` с использованием одного из подходов:
+1. многопоточность
+2. многопроцессность
+3. асинхронность*
