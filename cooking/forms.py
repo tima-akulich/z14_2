@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from cooking.models import Recipe, User, BaseReaction, RecipeReaction
-from cooking.utils import convert_image_to_base64
 
 
 class RecipeForm(forms.ModelForm):
@@ -12,10 +11,6 @@ class RecipeForm(forms.ModelForm):
 
     def save(self, commit=True):
         recipe = super().save(commit=False)
-        if recipe.image:
-            recipe.image_base64 = convert_image_to_base64(recipe.image.file)
-        else:
-            recipe.image_base64 = ''
 
         if commit:
             recipe.save()

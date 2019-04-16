@@ -3,9 +3,11 @@ from celery import shared_task
 from datetime import timedelta
 
 from celery.schedules import crontab
+from celery.task import periodic_task
 from django.core.mail import send_mail
 
 from cooking.models import User
+from cooking.utils import parse_recipes
 
 
 @shared_task
@@ -36,3 +38,7 @@ SCHEDULE = {
     }
 }
 
+
+@periodic_task(run_every=crontab(hour=0, minute=0))
+def parse_recipes_task():
+    parse_recipes()
