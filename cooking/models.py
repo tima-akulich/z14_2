@@ -32,7 +32,7 @@ class Recipe(models.Model):
     title = models.CharField(_('Название'), max_length=100)
     text = models.TextField(_('Текст'))
     image = models.ImageField(_('Картинка'), null=True, blank=True)
-    image_base64 = models.TextField(null=True, blank=True)
+    # image_base64 = models.TextField(null=True, blank=True)
     author = models.ForeignKey(
         get_user_model(),
         null=True,
@@ -56,7 +56,7 @@ class Recipe(models.Model):
 
     @property
     def get_image(self):
-        return self.image_base64 or (self.image.url if self.image else '')
+        return self.image.url if self.image else ''
 
     class Meta:
         verbose_name = _('Рецепт')
