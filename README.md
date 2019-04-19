@@ -115,3 +115,15 @@ PS:
 1. многопоточность
 2. многопроцессность
 3. асинхронность*
+
+# Lesson 22 19/04/2019
+1. https://ru.wikipedia.org/wiki/REST - что такое Rest
+2. https://habr.com/ru/post/351890/ - Best practises 
+3. https://habr.com/ru/post/38730/ архитектура REST
+4. https://www.django-rest-framework.org/tutorial/quickstart/ - rest в django
+5. https://developer.mozilla.org/ru/docs/Web/HTTP/CORS - про кросс доменные запросы
+6. https://ru.vuejs.org/v2/guide/ - документация по Vue.js
+7. Проект на js https://github.com/tima-akulich/z14_3
+
+### Homework
+#### Придумать тему диплома и скинуть мне в телеграмм
